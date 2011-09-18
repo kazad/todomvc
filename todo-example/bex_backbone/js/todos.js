@@ -16,7 +16,7 @@ $(function() {
 	  form.action = url;
 	  form.method = "POST";
 
-	// repeat for each parameter
+		// repeat for each parameter
 		if (data) {
 			var input = document.createElement("input");
 			input.type = "hidden";
@@ -33,8 +33,19 @@ $(function() {
 
 	window.Aha = Backbone.Model.extend({
 		defaults: {},
-		
+				
 		initialize: function() {},
+		
+		//  not a pre-initialize function... add some extra data for the view
+		setup: function() {
+			var post = this.get('post');
+			post.truncated_title = this.truncated_title();
+			this.set({'post':post});
+		},
+		
+		truncated_title: function(){
+			return this.get('post').title.replace(/^\w+[:]\s+/, '');
+		}
 	});
 
 	window.AhaList = Backbone.Collection.extend({
@@ -83,6 +94,7 @@ $(function() {
 	window.AppView = Backbone.View.extend({
 		el: $("#aha"),
 		events: {},
+		template: null,
 
 		initialize: function() {
 			_.bindAll(this, 'addOne', 'addAll', 'render');
@@ -91,6 +103,10 @@ $(function() {
 			Ahas.bind('reset', this.addAll);
 			Ahas.bind('all', this.render);
 			
+			// setup initial template
+			this.template = _.template($('#' + this.el.attr('data-app-template')).html());
+			this.el.html(this.template());
+			
 			// configure search params
 			Ahas.params = this.el.attr('data-params');
 			
@@ -98,8 +114,11 @@ $(function() {
 		},
 
 		addOne: function(aha) {
-	      var view = new AhaView({model: aha});
-	      this.$("#aha-list").append(view.render().el);
+			// TODO: ugly... not sure why setup happens here. Why not after fetch?
+			aha.setup();
+			
+			var view = new AhaView({model: aha});
+			this.$("#aha-list").append(view.render().el);
 	    },
 
 	    // Add all items in the **Todos** collection at once.

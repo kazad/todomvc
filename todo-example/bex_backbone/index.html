@@ -13,21 +13,78 @@
 
   <body>
 	
+	<style type="text/css">
+	#aha {
+	     font-family: verdana;
+	     font-size: 12px;
+	     margin: 0px;
+	     padding: 0px;
+	}
+
+	#aha ul {
+	     background: none repeat scroll 0% 0% #FAFAFA;
+	     border: 1px solid #CCCCCC;
+	     list-style: none outside none;
+	     margin: 0px;
+	     padding: 0px;
+	}
+
+	#aha li {
+	     border-bottom: 1px solid #CCCCCC;
+	     list-style: none outside none;
+	     margin: 0px;
+	     padding: 4px;
+	}
+
+	#aha li:last-child {
+	     border-bottom: medium none;
+	}
+
+	</style>
+	
 	<!-- BetterExplained app! -->
-	<div id="aha" data-params="category=topic" data-paramsx="url=http://google.com">
-		<ul id="aha-list"></ul>
+	<div id="aha" data-params="category=topic" data-app-template="app-template-topic">
 	</div>
 
     <!-- Templates -->
+	<script type="text/template" id="app-template-topic">
+		Suggest a topic! <a href="" id="filter-popular">Popular</a> | <a href="" id="filter-newest">Newest</a>
+		<ul id="aha-list"></ul>
+	
+		<input type="text" id="suggest-topic" />
+		<input type="submit" value="Suggest topic" />
+	</script>
+	
+	<script type="text/template" id="app-template-list">
+		<ul id="aha-list"></ul>
+	</script>
 
     <script type="text/template" id="item-template">
       <div class="aha">
-		<a href="" class="upvote"><%= post.upvote_count %> like</a>
-		<%= post.title %>
-		
-		| <a href="" class="downvote">dislike</a>
+		<%= post.truncated_title %> &middot;
+		<a href="" class="upvote"><%= post.upvote_count %> like</a> &middot;
+		<a href="http://aha.betterexplained.com/posts/<%= post.id %>">
+			<%= post.comments_count > 0 ? 'comments (' + post.comments_count + ')' : 'discuss' %>
+		</a>
       </div>
     </script>
+
+    <script type="text/template" id="item-template-alt">
+      <div class="aha">
+		<a href="" class="upvote"><%= post.upvote_count %> like</a>
+		<%= post.title %>
+		<a href="http://aha.betterexplained.com/posts/<%= post.id %>">
+			<%= post.comments_count > 0 ? 'comments (' + post.comments_count + ')' : 'discuss' %>
+		</a>
+      </div>
+    </script>
+
+	<script type="text/template" id="item-add">
+		<div class="aha-add">
+			<input type="text"></text>
+			<input type="submit"></text>
+		</div>
+	</script>
   </body>
 
 </html>
