@@ -30,6 +30,9 @@ $(function() {
 	}
 
 	/* BetterExplained Aha! App */
+	
+	//window.aha_server = 'http://localhost:3000';
+	window.aha_server = 'http://aha.betterexplained.com';
 
 	window.Aha = Backbone.Model.extend({
 		defaults: {},
@@ -38,13 +41,11 @@ $(function() {
 		
 		//  not a pre-initialize function... add some extra data for the view
 		setup: function() {
-			var post = this.get('post');
-			post.truncated_title = this.truncated_title();
-			this.set({'post':post});
+			this.set({'truncated_title': this.truncated_title()});
 		},
 		
 		truncated_title: function(){
-			return this.get('post').title.replace(/^\w+[:]\s+/, '');
+			return this.get('title').replace(/^\w+[:]\s+/, '');
 		}
 	});
 
@@ -56,7 +57,7 @@ $(function() {
 		
 		url: function() {
 			// TODO: get the url from the current document.location & include any extra filtering options
-			return 'http://localhost:3000/posts.json?' + this.params + '&callback=?';
+			return aha_server + '/posts.json?' + this.params + '&callback=?';
 		},
 		
 		initialize: function(params) {
@@ -78,7 +79,7 @@ $(function() {
 	    },
 	
 		upvote: function() {
-			var url = 'http://localhost:3000/posts/' + this.model.get('post').id + '/rate?rating=1&background=1';
+			var url = aha_server + '/posts/' + this.model.get('id') + '/rate?rating=1&background=1';
 			crossDomainPost(url);
 			return false;
 		},
