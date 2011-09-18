@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Backbone.js</title>
+    <script src="js/json2.js"></script>
+    <script src="js/jquery-1.5.js"></script>
+    <script src="js/underscore-1.1.6.js"></script>
+    <script src="js/backbone.js"></script>
+    <script src="js/backbone-localstorage.js"></script>
+    <script src="js/todos.js"></script>
+  </head>
+
+  <body>
+	
+	<!-- BetterExplained app! -->
+	<div id="aha" data-params="category=topic" data-paramsx="url=http://google.com">
+		<ul id="aha-list"></ul>
+	</div>
+
+    <!-- Templates -->
+
+    <script type="text/template" id="item-template">
+      <div class="aha">
+		<a href="" class="upvote"><%= post.upvote_count %> like</a>
+		<%= post.title %>
+		
+		| <a href="" class="downvote">dislike</a>
+      </div>
+    </script>
+  </body>
+
+</html>
