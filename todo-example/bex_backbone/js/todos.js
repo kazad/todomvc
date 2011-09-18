@@ -92,12 +92,15 @@ $(function() {
 
 	// Our overall **AppView** is the top-level piece of UI.	
 	window.AppView = Backbone.View.extend({
-		el: $("#aha"),
+		el: null,
 		events: {},
 		template: null,
 
 		initialize: function() {
 			_.bindAll(this, 'addOne', 'addAll', 'render');
+
+			// fetch the data for this view
+			var Ahas = new AhaList();
 
 			Ahas.bind('add', this.addOne);
 			Ahas.bind('reset', this.addAll);
@@ -111,6 +114,8 @@ $(function() {
 			Ahas.params = this.el.attr('data-params');
 			
 			Ahas.fetch();
+			
+			this.collection = Ahas;
 		},
 
 		addOne: function(aha) {
@@ -123,7 +128,7 @@ $(function() {
 
 	    // Add all items in the **Todos** collection at once.
 	    addAll: function() {
-	      Ahas.each(this.addOne);
+	      this.collection.each(this.addOne);
 	    },
 
 		render: function() {
@@ -132,6 +137,7 @@ $(function() {
 	});
 	
 	// Finally, we kick things off by creating the **App**.
-	window.Ahas = new AhaList();
-	window.AhaApp = new AppView;
+	$('.bex-aha').each(function(){ 
+		window.AhaApp = new AppView({el: $(this)});
+	});
 });
