@@ -39,9 +39,80 @@
 	.bex-aha li:last-child {
 	     border-bottom: medium none;
 	}
+	
+	#tab-wrap {
+	    width:280px;
+	}
+	
+	ul.tabs {
+	    width:280px;
+	    margin:0;
+	    padding:0;
+	}
+	ul.tabs li {
+	    display:block;
+	    float:left;
+	    padding: 0 5px 0 0;
+	}
+	ul.tabs li a {
+	    display:block;
+	    float:left;
+	    padding:5px;
+	    background-color:#fafafa;
+	    color:#666;
+	    text-decoration:none;
+	}
+	.selected {
+	    font-weight:bold;
+	}
+	.tab-content {
+	    clear:both;
+	}
+	
 	</style>
 	
 	<!-- BetterExplained app! -->
+	<h2>Aha moments</h2>
+	<div id="tab-wrap">
+	    <ul class="tabs">
+	        <li><a href="#" class="defaulttab" rel="tabs1">My Drafts</a></li>
+	        <li><a href="#" rel="tabs2">Recent</a></li>
+		    <li><a href="#" rel="tabs3">Popular</a></li>
+	    </ul>
+
+	    <div class="tab-content" id="tabs1">
+			<div class="bex-aha" data-params="order=rating&user=kalid&category=upcoming,notes&limit=10" data-app-template="app-template-list">
+			</div>
+		</div>
+	    <div class="tab-content" id="tabs2">
+			<div class="bex-aha" data-params="order=latest&limit=10" data-app-template="app-template-list"></div>
+		</div>
+		<div class="tab-content" id="tabs3">
+			<div class="bex-aha" data-params="order=rating&limit=10" data-app-template="app-template-list"></div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+	$(function() {
+		
+		function switch_tabs(obj)
+		{
+			$('.tab-content').hide();
+			$('.tabs a').removeClass("selected");
+			var id = obj.attr("rel");
+			$('#'+id).show();
+			obj.addClass("selected");
+		}
+
+		$('.tabs a').click(function(){
+			switch_tabs($(this));
+		});
+		
+		switch_tabs($('.defaulttab'));
+	});
+	</script>
+	
+	
 	<h2>Topics</h2>
 	<div id="aha" class="bex-aha" data-params="category=topic" data-app-template="app-template-topic">
 	</div>
@@ -72,8 +143,9 @@
     <script type="text/template" id="item-template">
       <div class="aha">
 		<%= title %>
+		<br/>
 		<span class="meta">
-		<a href="" class="upvote"><%= upvote_count %> like<%= upvote_count > 1 ? 's' : '' %></a>
+		<a href="" class="upvote">like (<%= upvote_count + 1 %>)</a>
 		
 		<a href="<%= aha_server + href %>">
 			<%= comments_count > 0 ? comments_count + ' comment' + (comments_count > 1 ? 's' : '') : 'discuss' %>
@@ -81,6 +153,9 @@
 		</span>
       </div>
     </script>
+<!-- 
+like<%= (upvote_count + 1) > 1 ? 's' : '' %>
+-->
 
 	<script type="text/template" id="item-add">
 		<div class="aha-add">
